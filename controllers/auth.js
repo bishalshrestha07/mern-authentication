@@ -10,10 +10,11 @@ exports.register = async (req, res, next) => {
       email,
       password,
     });
-    res.status(201).json({
-      success: true,
-      token: "sfdsadfje",
-    });
+    // res.status(201).json({
+    //   success: true,
+    //   token: "sfdsadfje",
+    // });
+    sendToken(user, 201, res);
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -53,10 +54,11 @@ exports.login = async (req, res, next) => {
       // });
       return next(new ErrorResponse("Invalid Credentials", 401));
     }
-    res.status(200).json({
-      success: true,
-      token: "abc45xdf",
-    });
+    // res.status(200).json({
+    //   success: true,
+    //   token: "abc45xdf",
+    // });
+    sendToken(user, 200, res);
   } catch (error) {
     // res.status(500).json({
     //   success: false,
@@ -70,4 +72,9 @@ exports.forgotpassword = (req, res, next) => {
 };
 exports.resetpassword = (req, res, next) => {
   res.send("resetpassword");
+};
+
+const sendToken = (user, statusCode, res) => {
+  const token = user.getSignedToken();
+  res.status(statusCode).json({ success: true, token });
 };
